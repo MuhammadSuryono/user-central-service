@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Repositories\Interfaces;
+
+Interface UserInterface
+{
+    /**
+     * @return object
+     */
+    public function list_users(): object;
+
+    /**
+     * @return object
+     */
+    public function create_user(): object;
+
+    /**
+     * @param int $id
+     * @return object
+     */
+    public function update_user(int $id): object;
+
+    /**
+     * @param int $id
+     * @return object
+     */
+    public function delete_user(int $id): object;
+
+    /**
+     * @param int $id
+     * @return object
+     */
+    public function add_detail_user(int $id): object;
+
+    /**
+     * @param int $id
+     * @return object
+     */
+    public function add_bank_account(int $id): object;
+
+    /**
+     * @param int $id
+     * @return object
+     */
+    public function add_document(int $id): object;
+
+    /**
+     * @param int $bankAccountId
+     * @return object
+     */
+    public function update_bank_account(int $bankAccountId): object;
+
+    /**
+     * @param int $bankAccountId
+     * @return object
+     */
+    public function delete_bank_account(int $bankAccountId): object;
+}
