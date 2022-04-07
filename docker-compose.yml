@@ -3,8 +3,8 @@ services:
   app:
     build:
       args:
-        user: suryono
-        uid: 1000
+        user: $USER
+        uid: $UID
       context: ./
       dockerfile: Dockerfile
     image: user-central-service
