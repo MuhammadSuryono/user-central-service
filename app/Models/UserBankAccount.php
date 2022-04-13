@@ -16,4 +16,9 @@ class UserBankAccount extends \Illuminate\Database\Eloquent\Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function bank()
+    {
+        return $this->belongsTo('App\Models\Bank', 'swift_code', 'swift_code');
+    }
 }

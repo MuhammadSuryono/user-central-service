@@ -62,4 +62,23 @@ class UserController extends Controller
         $callbackUpdate = $this->userRepository->update_user($id);
         return $this->BuildResponse($callbackUpdate->is_success ? 200 : 400, $callbackUpdate->message, $callbackUpdate->data);
     }
+
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function show($id): JsonResponse
+    {
+        $callbackRead = $this->userRepository->read_detail_user((int)$id);
+        return $this->BuildResponse(200, $callbackRead->message, $callbackRead->data);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function upload_document(): JsonResponse
+    {
+        $callbackUpdate = $this->userRepository->add_document();
+        return $this->BuildResponse($callbackUpdate->is_success ? 200 : 400, $callbackUpdate->message, $callbackUpdate->data);
+    }
 }

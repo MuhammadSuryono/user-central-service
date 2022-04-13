@@ -7,11 +7,15 @@
     "require": {
         "php": ">=7.4",
         "ext-json": "*",
+        "anik/form-request": "^4.4",
         "barryvdh/laravel-dompdf": "^1.0",
         "laravel/lumen-framework": "^8.3.1",
+        "pusher/pusher-php-server": "^7.0",
         "sentry/sentry-laravel": "^2.11",
         "tibonilab/pdf-lumen-bundle": "~2.0.0",
-        "tymon/jwt-auth": "^1.0"
+        "tymon/jwt-auth": "^1.0",
+        "urameshibr/lumen-form-request": "^1.5",
+      "ext-curl": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

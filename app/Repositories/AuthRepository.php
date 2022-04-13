@@ -67,4 +67,19 @@ class AuthRepository extends Controller implements AuthInterface
             'expires_in' => auth()->factory()->getTTL() * 60 * 24
         ];
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function check(array $credentials): object
+    {
+        $user = User::where('username', $credentials['username'])->with("userDetail")->first();
+        if ($user == null) return $this->callback(false, 'Unable to find user');
+        if (!password_verify($credentials['password'], $user->password)) return $this->callback(false, 'Invalid password');
+        $collections = new AuthResource($user);
+        $userDetail = new UserDetailResource($user->userDetail);;
+        $collections = (object)array_merge($collections->toArray($user), $userDetail->toArray($user->userDetail));
+
+        return $this->callback(true, "Success login", $collections);
+    }
 }

@@ -2,15 +2,18 @@
 
 namespace App\Repositories;
 
+use App\Helper\UploadFile;
 use App\Models\User;
 use App\Models\UserBankAccount;
 use App\Models\UserDetail;
 use App\Models\UserDocument;
 use App\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserRepository extends Controller implements Interfaces\UserInterface
 {
+    protected string $DEFAULT_PASSWORD = '123456';
 
     /**
      * @inheritDoc
@@ -29,12 +32,9 @@ class UserRepository extends Controller implements Interfaces\UserInterface
     {
         $user = new User();
         foreach ($this->request->all() as $key => $value) {
-            if ($key == 'password') {
-                $user->$key = Hash::make($value);
-            } else {
-                $user->$key = $value;
-            }
+            $user->$key = $value;
         }
+        $user->password = Hash::make($this->DEFAULT_PASSWORD);
         $isSaved = $user->save();
         return $this->callback($isSaved, $isSaved ? "Success create data":"Failed create data", $user);
     }
@@ -133,9 +133,18 @@ class UserRepository extends Controller implements Interfaces\UserInterface
     /**
      * @inheritDoc
      */
-    public function add_document(int $id): object
+    public function add_document(): object
     {
-        // TODO: Implement add_document() method.
+        $user = User::find($this->request->user_id);
+        if ($user == null) return $this->callback(false, "Data not found");
+
+        $userDocument = new UserDocument();
+        $userDocument->user_id = $user->id;
+        foreach ($this->request->all() as $key => $value) {
+            $userDocument->$key = $value;
+        }
+        $isSaved = $userDocument->save();
+        return $this->callback($isSaved, $isSaved ? "Success create data":"Failed create data", $userDocument);
     }
 
     /**
@@ -163,5 +172,26 @@ class UserRepository extends Controller implements Interfaces\UserInterface
 
         $isDeleted = $userBank->delete();
         return $this->callback($isDeleted, $isDeleted ? "Success delete data":"Failed delete data", $userBank);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function read_detail_user(int $id): object
+    {
+        $user = User::with(['userDetail', 'userBank', 'documents'])->where('id', $id)->first();
+        return $this->callback(true, "Success read data", $user);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function delete_document(int $id): object
+    {
+        $userDocument = UserDocument::find($id);
+        if ($userDocument == null) return $this->callback(false, "Data not found");
+
+        $isDeleted = $userDocument->delete();
+        return $this->callback($isDeleted, $isDeleted ? "Success delete data":"Failed delete data", $userDocument);
     }
 }

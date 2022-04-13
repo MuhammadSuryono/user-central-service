@@ -14,7 +14,6 @@ class UserCreateRequest
             'email' => 'required|email|max:255|unique:users',
             'phone_number' => 'required|string|min:9|max:16|unique:users',
             'username' => 'required|string|max:255|unique:users',
-            'password' => 'required|min:6',
         ];
     }
 }

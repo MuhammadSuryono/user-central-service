@@ -24,4 +24,10 @@ interface AuthInterface
      * @return object
      */
     public function auth_me(): object;
+
+    /**
+     * @param array $credentials
+     * @return object
+     */
+    public function check(array $credentials): object;
 }

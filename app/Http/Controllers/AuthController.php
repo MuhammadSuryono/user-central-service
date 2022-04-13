@@ -24,7 +24,7 @@ class AuthController extends Controller
      */
     public function __construct(Request $request, AuthInterface $authInterface)
     {
-        $this->middleware('auth:api', ['except' => 'login', 'logout']);
+//        $this->middleware('auth:api', ['except' => 'login', 'logout', 'check']);
         $this->request = $request;
         $this->authInterface = $authInterface;
     }
@@ -61,6 +61,22 @@ class AuthController extends Controller
     {
         $logout = $this->authInterface->auth_logout();
         return $this->BuildResponse($logout->is_success, $logout->message, $logout->data);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function check(): JsonResponse
+    {
+        $this->validate_request($this->request, [
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        $credentials = $this->request->only(['username', 'password']);
+        $auth = $this->authInterface->check($credentials);
+
+        return $this->BuildResponse($auth->is_success ? 200 : 400, $auth->message, $auth->data);
     }
 
 }

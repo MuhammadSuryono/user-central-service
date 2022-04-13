@@ -39,10 +39,9 @@ Interface UserInterface
     public function add_bank_account(int $id): object;
 
     /**
-     * @param int $id
      * @return object
      */
-    public function add_document(int $id): object;
+    public function add_document(): object;
 
     /**
      * @param int $bankAccountId
@@ -55,4 +54,16 @@ Interface UserInterface
      * @return object
      */
     public function delete_bank_account(int $bankAccountId): object;
+
+    /**
+     * @param int $id
+     * @return object
+     */
+    public function read_detail_user(int $id): object;
+
+    /**
+     * @param int $id
+     * @return object
+     */
+    public function delete_document(int $id): object;
 }
